@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: boteti-west-football-tournament
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .

@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boteti West Football Tournament</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07110d;
+  --bg-2: #0b1712;
+  --panel: rgba(255,255,255,0.06);
+  --panel-2: rgba(255,255,255,0.08);
+  --line: rgba(255,255,255,0.12);
+  --text: #f5fff9;
+  --muted: rgba(255,255,255,0.62);
+  --green: #00c853;
+  --gold: #ffd54f;
+  --orange: #ff8f00;
+  --red: #ff5252;
+  --shadow: 0 24px 80px rgba(0,0,0,0.35);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(0,200,83,0.15), transparent 26%),
+    radial-gradient(circle at top right, rgba(255,213,79,0.14), transparent 24%),
+    linear-gradient(180deg, var(--bg) 0%, #06100b 100%);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; }
+img { display: block; width: 100%; }
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.page {
+  position: relative;
+  z-index: 1;
+}
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
+  backdrop-filter: blur(18px);
+  background: rgba(5,10,8,0.78);
+  border-bottom: 1px solid var(--line);
+}
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.nav-links a {
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.nav-links a:hover { color: var(--green); }
+.hero {
+  min-height: 84vh;
+  display: grid;
+  place-items: center;
+  padding: 4rem 1.5rem 3rem;
+}
+.hero-card {
+  width: min(1200px, 100%);
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 28px;
+  padding: 3rem 1.5rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #161204;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.hero-title {
+  margin: 1rem 0 0.25rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #ffffff, #fff1b0 60%, #ffc36b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--green);
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.hero-copy {
+  width: min(760px, 100%);
+  margin: 1.2rem auto 0;
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.75;
+}
+.hero-regions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.region-chip {
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  text-align: left;
+}
+.region-chip strong {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.region-chip span {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+main {
+  width: min(1280px, calc(100% - 2rem));
+  margin: 0 auto 4rem;
+}
+.section-title-wrap {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.section-kicker {
+  color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.section-title {
+  margin: 0.35rem 0 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: 0.06em;
+}
+.region-nav {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 0 2rem;
+}
+.region-nav a {
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.region-nav a:hover {
+  border-color: rgba(0,200,83,0.4);
+  color: var(--green);
+}
+.region-section {
+  margin: 2rem 0 3rem;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+}
+.region-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.region-title {
+  margin: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.06em;
+}
+.region-meta {
+  color: var(--muted);
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+.region-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.06);
+  color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.region-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1rem;
+}
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1rem;
+  overflow: hidden;
+}
+.card h3 {
+  margin: 0 0 0.9rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.fixture-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.fixture {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  padding: 0.9rem;
+}
+.fixture-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.55rem;
+}
+.fixture-phase {
+  color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.fixture-status {
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255,213,79,0.16);
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.fixture-match {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.7rem;
+  align-items: center;
+}
+.fixture-team { font-weight: 700; }
+.fixture-team:last-child { text-align: right; }
+.fixture-score {
+  min-width: 76px;
+  padding: 0.45rem 0.7rem;
+  text-align: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #1a1300;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+}
+.fixture-meta {
+  margin-top: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  flex-wrap: wrap;
+}
+.table-wrap { overflow-x: auto; }
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+.standings-table th,
+.standings-table td {
+  padding: 0.8rem 0.65rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  font-size: 0.92rem;
+}
+.standings-table th {
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.standings-table td.team-cell,
+.standings-table th.team-cell {
+  text-align: left;
+}
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.rank-1 { background: var(--gold); color: #1a1300; }
+.rank-2 { background: #cfd8dc; color: #000; }
+.rank-3 { background: #bc8f6f; color: #fff; }
+.rank-4, .rank-5, .rank-6, .rank-7, .rank-8 { background: rgba(255,255,255,0.1); color: #fff; }
+.points-cell { color: var(--gold); font-weight: 700; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.stat-list {
+  display: grid;
+  gap: 0.65rem;
+}
+.stat-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+.stat-rank {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+.stat-player {
+  font-weight: 700;
+}
+.stat-team {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.news-card {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+.news-image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #102018;
+}
+.news-image img {
+  height: 100%;
+  object-fit: cover;
+}
+.news-body {
+  padding: 1rem;
+}
+.news-tag {
+  display: inline-flex;
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0,200,83,0.14);
+  color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.news-title {
+  margin: 0.8rem 0 0.35rem;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+.news-meta {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.footer {
+  padding: 2rem 1rem 3rem;
+  text-align: center;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.9rem;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.68);
+  backdrop-filter: blur(8px);
+}
+.modal.open { display: flex; }
+.modal-panel {
+  width: min(1240px, 100%);
+  max-height: min(92vh, 940px);
+  overflow: auto;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #0b1712, #09120e);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: var(--shadow);
+}
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(9,18,14,0.95);
+  backdrop-filter: blur(18px);
+}
+.admin-title {
+  margin: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+}
+.admin-sub {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--green), #37dc78);
+  color: #08200e;
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid var(--line);
+}
+.btn-warn {
+  background: linear-gradient(135deg, #ffb300, #ff6f00);
+  color: #241400;
+}
+.admin-body {
+  padding: 1rem;
+}
+.admin-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+}
+.admin-tabs {
+  display: grid;
+  gap: 0.75rem;
+}
+.admin-tab {
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  cursor: pointer;
+}
+.admin-tab.active {
+  border-color: rgba(0,200,83,0.4);
+  background: rgba(0,200,83,0.12);
+}
+.admin-tab strong {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.admin-tab span {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.editor-card {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.editor-card h4 {
+  margin: 0 0 0.9rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+.field label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  padding: 0.85rem 0.9rem;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.editor-list {
+  display: grid;
+  gap: 0.8rem;
+}
+.editor-item {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  padding: 0.9rem;
+}
+.editor-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+.item-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--green);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.list-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+.editor-note {
+  margin-top: 1rem;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.85rem;
+}
+
+.admin-auth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.admin-auth-card {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 1rem;
+}
+.admin-auth-card h4 {
+  margin: 0.35rem 0 0.55rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+}
+.admin-auth-help {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.admin-login-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+.admin-login-row input {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  padding: 0.85rem 0.9rem;
+}
+.admin-login-error {
+  min-height: 1.25rem;
+  margin-top: 0.7rem;
+  color: #ff9d9d;
+  font-size: 0.86rem;
+}
+.admin-workspace-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 120;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: rgba(5,18,10,0.94);
+  border: 1px solid rgba(0,200,83,0.3);
+  color: #fff;
+  transform: translateY(150%);
+  transition: transform 0.25s ease;
+}
+.toast.show { transform: translateY(0); }
+.hidden { display: none !important; }
+@media (max-width: 1100px) {
+  .region-grid,
+  .admin-grid,
+  .news-grid,
+  .hero-regions,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  nav { padding: 0.9rem 1rem; }
+  .nav-links { display: none; }
+  .hero-card { padding: 2rem 1rem; }
+  main { width: min(100% - 1rem, 1280px); }
+  .region-section { padding: 1rem; }
+  .section-title-wrap, .region-header, .admin-topbar { align-items: start; flex-direction: column; }
+  .fixture-match { grid-template-columns: 1fr; text-align: center; }
+  .fixture-team:last-child { text-align: center; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="page">
+  <nav>
+    <div class="nav-brand">⚽ BOTETI WEST TOURNAMENT</div>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#rakops-mmadikola">Rakops / Mmadikola</a></li>
+      <li><a href="#xhumo-toromoja">Xhumo / Toromoja</a></li>
+      <li><a href="#mopipi-mokobaxane">Mopipi / Mokobaxane</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="overview">
+    <div class="hero-card">
+      <div class="badge">🏆 Community Football Hub</div>
+      <h1 class="hero-title" id="hero-title">Boteti West Football Tournament</h1>
+      <p class="hero-subtitle" id="hero-subtitle">Live Tables • Fixtures • Leaders • News</p>
+      <p class="hero-copy" id="hero-copy">A single tournament page with three dedicated zones for Rakops / Mmadikola, Xhumo / Toromoja, and Mopipi / Mokobaxane. Type <strong>admin</strong> anywhere on this page to open the hidden control room and update standings, fixtures, goal scorers, assist leaders, and picture news cards.</p>
+      <div class="hero-regions" id="hero-regions"></div>
+    </div>
+  </section>
+
+  <main>
+    <div class="section-title-wrap">
+      <div>
+        <div class="section-kicker">Dedicated regional spaces</div>
+        <h2 class="section-title">Tournament Zones</h2>
+      </div>
+    </div>
+    <div class="region-nav" id="region-nav"></div>
+    <div id="regions-root"></div>
+  </main>
+
+  <footer class="footer">
+    <div id="footer-text">Boteti West Football Tournament • Live community football hub</div>
+  </footer>
+</div>
+
+
+<div class="modal" id="admin-modal" aria-hidden="true">
+  <div class="modal-panel">
+    <div class="admin-topbar">
+      <div>
+        <h2 class="admin-title">Admin Control Room</h2>
+        <div class="admin-sub" id="admin-subtext">Hidden panel opened by typing admin. Each zone has its own password.</div>
+      </div>
+      <div class="admin-actions hidden" id="admin-tools">
+        <button class="btn btn-secondary" type="button" id="switch-admin">Switch Panel</button>
+        <button class="btn btn-primary" type="button" id="save-btn">Save Changes</button>
+        <button class="btn btn-secondary" type="button" id="close-admin">Close</button>
+      </div>
+    </div>
+    <div class="admin-body">
+      <section id="admin-gateway"></section>
+      <section id="admin-workspace" class="hidden">
+        <div class="editor-card">
+          <div class="admin-workspace-header">
+            <div>
+              <div class="section-kicker" id="active-admin-kicker">Zone Admin</div>
+              <h4 id="active-admin-title">Regional Panel</h4>
+              <div class="editor-note" id="active-admin-note">Only one region is unlocked at a time.</div>
+            </div>
+          </div>
+        </div>
+        <section id="admin-editor"></section>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved.</div>
+
+
+<script>
+const STORAGE_KEY = 'bwft-site-state-v1';
+
+function makePlaceholder(label, c1 = '#0b5d37', c2 = '#4caf50') {
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+      <defs>
+        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+          <stop stop-color="${c1}" offset="0%"/>
+          <stop stop-color="${c2}" offset="100%"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="750" fill="url(#g)"/>
+      <circle cx="975" cy="135" r="120" fill="rgba(255,255,255,0.10)"/>
+      <circle cx="220" cy="620" r="150" fill="rgba(255,255,255,0.08)"/>
+      <text x="80" y="360" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700" fill="#ffffff">${label}</text>
+      <text x="80" y="430" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="rgba(255,255,255,0.85)">Boteti West Football Tournament</text>
+    </svg>
+  `);
+}
+
+const defaultState = {
+  tournamentName: 'Boteti West Football Tournament',
+  heroSubtitle: 'Live Tables • Fixtures • Leaders • News',
+  heroIntro: 'A single tournament page with three dedicated zones for Rakops / Mmadikola, Xhumo / Toromoja, and Mopipi / Mokobaxane. Type admin anywhere on this page to open the hidden control room and update standings, fixtures, goal scorers, assist leaders, and picture news cards.',
+  regions: [
+    {
+      slug: 'rakops-mmadikola',
+      name: 'Rakops / Mmadikola',
+      short: 'Rakops',
+      venue: 'Rakops Main Ground',
+      update: 'Updated for the Rakops and Mmadikola cluster',
+      fixtures: [
+        { phase: 'Round 1', home: 'Rakops Stars', away: 'Mmadikola City', time: '09:00', venue: 'Rakops Main Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 1', home: 'Falcon XI', away: 'Kedia United', time: '11:30', venue: 'Rakops Main Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 2', home: 'Rakops Stars', away: 'Falcon XI', time: '14:30', venue: 'Rakops Main Ground', status: 'Upcoming', score: 'VS' }
+      ],
+      table: [
+        { team: 'Rakops Stars', played: 2, won: 2, draw: 0, lost: 0, gf: 5, ga: 1, gd: 4, points: 6 },
+        { team: 'Falcon XI', played: 2, won: 1, draw: 0, lost: 1, gf: 4, ga: 3, gd: 1, points: 3 },
+        { team: 'Mmadikola City', played: 2, won: 1, draw: 0, lost: 1, gf: 3, ga: 4, gd: -1, points: 3 },
+        { team: 'Kedia United', played: 2, won: 0, draw: 0, lost: 2, gf: 1, ga: 5, gd: -4, points: 0 }
+      ],
+      scorers: [
+        { player: 'K. Molefe', team: 'Rakops Stars', value: 4 },
+        { player: 'T. Segolodi', team: 'Falcon XI', value: 2 },
+        { player: 'B. Motlhatlhedi', team: 'Mmadikola City', value: 2 }
+      ],
+      assists: [
+        { player: 'P. Tau', team: 'Rakops Stars', value: 3 },
+        { player: 'R. Mmusi', team: 'Falcon XI', value: 2 },
+        { player: 'L. Seisa', team: 'Mmadikola City', value: 1 }
+      ],
+      news: [
+        { tag: 'Announcement', title: 'Rakops zone fixtures released for opening weekend', date: 'April 2026', source: 'Tournament Office', image: makePlaceholder('Rakops Zone', '#0b5d37', '#21a85b') },
+        { tag: 'Matchday', title: 'Rakops Stars open with strong form in early standings', date: 'April 2026', source: 'Sports Desk', image: makePlaceholder('Matchday Update', '#7b5b00', '#ff9f1a') },
+        { tag: 'Community', title: 'Supporters from Mmadikola expected in big numbers', date: 'April 2026', source: 'Community Desk', image: makePlaceholder('Community Spirit', '#1e3a8a', '#2563eb') }
+      ]
+    },
+    {
+      slug: 'xhumo-toromoja',
+      name: 'Xhumo / Toromoja',
+      short: 'Xhumo',
+      venue: 'Xhumo Community Ground',
+      update: 'Updated for the Xhumo and Toromoja cluster',
+      fixtures: [
+        { phase: 'Round 1', home: 'Xhumo Rovers', away: 'Toromoja Chiefs', time: '10:00', venue: 'Xhumo Community Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 1', home: 'Delta Boys', away: 'River Plate Boteti', time: '12:30', venue: 'Xhumo Community Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 2', home: 'Toromoja Chiefs', away: 'Delta Boys', time: '15:00', venue: 'Xhumo Community Ground', status: 'Upcoming', score: 'VS' }
+      ],
+      table: [
+        { team: 'Toromoja Chiefs', played: 2, won: 1, draw: 1, lost: 0, gf: 4, ga: 2, gd: 2, points: 4 },
+        { team: 'Xhumo Rovers', played: 2, won: 1, draw: 1, lost: 0, gf: 3, ga: 1, gd: 2, points: 4 },
+        { team: 'Delta Boys', played: 2, won: 0, draw: 1, lost: 1, gf: 2, ga: 3, gd: -1, points: 1 },
+        { team: 'River Plate Boteti', played: 2, won: 0, draw: 1, lost: 1, gf: 1, ga: 4, gd: -3, points: 1 }
+      ],
+      scorers: [
+        { player: 'M. Tlhapi', team: 'Toromoja Chiefs', value: 3 },
+        { player: 'G. Letsholo', team: 'Xhumo Rovers', value: 2 },
+        { player: 'T. Kelebile', team: 'Delta Boys', value: 1 }
+      ],
+      assists: [
+        { player: 'K. Mpho', team: 'Xhumo Rovers', value: 3 },
+        { player: 'S. Tsele', team: 'Toromoja Chiefs', value: 2 },
+        { player: 'A. Morake', team: 'River Plate Boteti', value: 1 }
+      ],
+      news: [
+        { tag: 'Preview', title: 'Toromoja Chiefs and Xhumo Rovers headline this zone', date: 'April 2026', source: 'Tournament HQ', image: makePlaceholder('Xhumo / Toromoja', '#6d1b7b', '#c2185b') },
+        { tag: 'Fixtures', title: 'Xhumo ground confirmed as host venue for the cluster', date: 'April 2026', source: 'Competition Office', image: makePlaceholder('Host Venue', '#004d40', '#009688') },
+        { tag: 'Player Watch', title: 'M. Tlhapi leads early goal scoring race', date: 'April 2026', source: 'Sports Desk', image: makePlaceholder('Player Watch', '#ad1457', '#ec407a') }
+      ]
+    },
+    {
+      slug: 'mopipi-mokobaxane',
+      name: 'Mopipi / Mokobaxane',
+      short: 'Mopipi',
+      venue: 'Mopipi Sports Ground',
+      update: 'Updated for the Mopipi and Mokobaxane cluster',
+      fixtures: [
+        { phase: 'Round 1', home: 'Mopipi United', away: 'Mokobaxane FC', time: '09:30', venue: 'Mopipi Sports Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 1', home: 'Boteti Pirates', away: 'Western Eagles', time: '12:00', venue: 'Mopipi Sports Ground', status: 'Upcoming', score: 'VS' },
+        { phase: 'Round 2', home: 'Mokobaxane FC', away: 'Boteti Pirates', time: '15:30', venue: 'Mopipi Sports Ground', status: 'Upcoming', score: 'VS' }
+      ],
+      table: [
+        { team: 'Mopipi United', played: 2, won: 2, draw: 0, lost: 0, gf: 6, ga: 2, gd: 4, points: 6 },
+        { team: 'Boteti Pirates', played: 2, won: 1, draw: 0, lost: 1, gf: 3, ga: 3, gd: 0, points: 3 },
+        { team: 'Mokobaxane FC', played: 2, won: 1, draw: 0, lost: 1, gf: 2, ga: 3, gd: -1, points: 3 },
+        { team: 'Western Eagles', played: 2, won: 0, draw: 0, lost: 2, gf: 1, ga: 4, gd: -3, points: 0 }
+      ],
+      scorers: [
+        { player: 'O. Dithapo', team: 'Mopipi United', value: 4 },
+        { player: 'N. Kgori', team: 'Boteti Pirates', value: 2 },
+        { player: 'J. Lesego', team: 'Mokobaxane FC', value: 1 }
+      ],
+      assists: [
+        { player: 'F. Sebego', team: 'Mopipi United', value: 3 },
+        { player: 'E. Kebadile', team: 'Boteti Pirates', value: 2 },
+        { player: 'R. Mabena', team: 'Western Eagles', value: 1 }
+      ],
+      news: [
+        { tag: 'Headline', title: 'Mopipi zone starts with attacking football and full stands', date: 'April 2026', source: 'Regional Desk', image: makePlaceholder('Mopipi Zone', '#8e2400', '#ff6d00') },
+        { tag: 'Standings', title: 'Mopipi United move top after a strong opening round', date: 'April 2026', source: 'Tournament Office', image: makePlaceholder('Top of the Table', '#005b96', '#00a8e8') },
+        { tag: 'Fans', title: 'Mokobaxane supporters bring energy to weekend fixtures', date: 'April 2026', source: 'Community Desk', image: makePlaceholder('Supporters', '#1a237e', '#3949ab') }
+      ]
+    }
+  ]
+};
+
+
+const ADMIN_ACCOUNTS = [
+  { label: 'Rakops / Mmadikola', password: 'RakoMma#2026' },
+  { label: 'Xhumo / Toromoja', password: 'XhuToro#2026' },
+  { label: 'Mopipi / Mokobaxane', password: 'MopiMoko#2026' }
+];
+
+let state = loadState();
+let activeAdminRegion = 0;
+let authenticatedAdminIndex = null;
+let typingBuffer = '';
+
+
+function deepCopy(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return deepCopy(defaultState);
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.regions)) return deepCopy(defaultState);
+    return parsed;
+  } catch (error) {
+    return deepCopy(defaultState);
+  }
+}
+
+function persistState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sortTableRows(rows) {
+  return [...rows].sort((a, b) => {
+    if ((b.points || 0) !== (a.points || 0)) return (b.points || 0) - (a.points || 0);
+    if ((b.gd || 0) !== (a.gd || 0)) return (b.gd || 0) - (a.gd || 0);
+    return (b.gf || 0) - (a.gf || 0);
+  });
+}
+
+function sortByValue(rows) {
+  return [...rows].sort((a, b) => (b.value || 0) - (a.value || 0));
+}
+
+function renderHero() {
+  document.getElementById('hero-title').textContent = state.tournamentName;
+  document.getElementById('hero-subtitle').textContent = state.heroSubtitle;
+  document.getElementById('hero-copy').innerHTML = `${escapeHtml(state.heroIntro)}`.replace('admin', '<strong>admin</strong>');
+  document.getElementById('footer-text').textContent = `${state.tournamentName} • Live community football hub`;
+
+  document.getElementById('hero-regions').innerHTML = state.regions.map(region => `
+    <a class="region-chip" href="#${escapeHtml(region.slug)}">
+      <strong>${escapeHtml(region.name)}</strong>
+      <span>${escapeHtml(region.venue)}</span>
+    </a>
+  `).join('');
+
+  document.getElementById('region-nav').innerHTML = state.regions.map(region => `
+    <a href="#${escapeHtml(region.slug)}">${escapeHtml(region.name)}</a>
+  `).join('');
+}
+
+function renderFixture(item) {
+  return `
+    <div class="fixture">
+      <div class="fixture-top">
+        <div class="fixture-phase">${escapeHtml(item.phase)}</div>
+        <div class="fixture-status">${escapeHtml(item.status)}</div>
+      </div>
+      <div class="fixture-match">
+        <div class="fixture-team">${escapeHtml(item.home)}</div>
+        <div class="fixture-score">${escapeHtml(item.score || 'VS')}</div>
+        <div class="fixture-team">${escapeHtml(item.away)}</div>
+      </div>
+      <div class="fixture-meta">
+        <span>🕒 ${escapeHtml(item.time)}</span>
+        <span>📍 ${escapeHtml(item.venue)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderStandings(rows) {
+  const sorted = sortTableRows(rows);
+  return `
+    <div class="table-wrap">
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="team-cell">Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sorted.map((row, index) => `
+            <tr>
+              <td><span class="rank-badge rank-${Math.min(index + 1, 8)}">${index + 1}</span></td>
+              <td class="team-cell">${escapeHtml(row.team)}</td>
+              <td>${Number(row.played) || 0}</td>
+              <td>${Number(row.won) || 0}</td>
+              <td>${Number(row.draw) || 0}</td>
+              <td>${Number(row.lost) || 0}</td>
+              <td>${Number(row.gf) || 0}</td>
+              <td>${Number(row.ga) || 0}</td>
+              <td>${Number(row.gd) || 0}</td>
+              <td class="points-cell">${Number(row.points) || 0}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderStatRows(rows) {
+  return sortByValue(rows).map((row, index) => `
+    <div class="stat-row">
+      <div class="stat-rank">${index + 1}</div>
+      <div>
+        <div class="stat-player">${escapeHtml(row.player)}</div>
+        <span class="stat-team">${escapeHtml(row.team)}</span>
+      </div>
+      <div class="stat-value">${Number(row.value) || 0}</div>
+    </div>
+  `).join('');
+}
+
+function renderNewsCard(item) {
+  const image = item.image || makePlaceholder(item.tag || 'News');
+  return `
+    <article class="news-card">
+      <div class="news-image">
+        <img src="${escapeHtml(image)}" alt="${escapeHtml(item.title)}" onerror="this.src='${makePlaceholder('News Card').replace(/'/g, "%27")}'">
+      </div>
+      <div class="news-body">
+        <span class="news-tag">${escapeHtml(item.tag)}</span>
+        <h4 class="news-title">${escapeHtml(item.title)}</h4>
+        <div class="news-meta">📅 ${escapeHtml(item.date)} • ${escapeHtml(item.source)}</div>
+      </div>
+    </article>
+  `;
+}
+
+function renderPublicRegions() {
+  const root = document.getElementById('regions-root');
+  root.innerHTML = state.regions.map(region => `
+    <section class="region-section" id="${escapeHtml(region.slug)}">
+      <div class="region-header">
+        <div>
+          <div class="section-kicker">Regional hub</div>
+          <h3 class="region-title">${escapeHtml(region.name)}</h3>
+          <div class="region-meta">
+            <span>📍 ${escapeHtml(region.venue)}</span>
+            <span>•</span>
+            <span>${escapeHtml(region.update || '')}</span>
+          </div>
+        </div>
+        <div class="region-tag">Live zone board</div>
+      </div>
+
+      <div class="region-grid">
+        <div class="stack">
+          <div class="card">
+            <h3>Fixtures</h3>
+            <div class="fixture-list">
+              ${region.fixtures.map(renderFixture).join('')}
+            </div>
+          </div>
+          <div class="card">
+            <h3>Latest News With Pictures</h3>
+            <div class="news-grid">
+              ${region.news.map(renderNewsCard).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <h3>Table</h3>
+            ${renderStandings(region.table)}
+          </div>
+          <div class="stats-grid">
+            <div class="card">
+              <h3>Top Goal Scorer</h3>
+              <div class="stat-list">${renderStatRows(region.scorers)}</div>
+            </div>
+            <div class="card">
+              <h3>Top Assistor</h3>
+              <div class="stat-list">${renderStatRows(region.assists)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `).join('');
+}
+
+function createInput(label, value, field, type = 'text', extra = '') {
+  return `
+    <div class="field">
+      <label>${escapeHtml(label)}</label>
+      <input type="${type}" value="${escapeHtml(value ?? '')}" data-field="${escapeHtml(field)}" ${extra}>
+    </div>
+  `;
+}
+
+function renderFixtureEditor(items) {
+  return items.map((item, index) => `
+    <div class="editor-item" data-list="fixtures" data-index="${index}">
+      <div class="editor-item-top">
+        <div class="item-badge">Fixture ${index + 1}</div>
+        <button class="btn btn-secondary" type="button" data-action="remove-item" data-list="fixtures" data-index="${index}">Remove</button>
+      </div>
+      <div class="form-grid">
+        ${createInput('Phase', item.phase, 'phase')}
+        ${createInput('Status', item.status, 'status')}
+        ${createInput('Home Team', item.home, 'home')}
+        ${createInput('Away Team', item.away, 'away')}
+        ${createInput('Time', item.time, 'time')}
+        ${createInput('Venue', item.venue, 'venue')}
+        ${createInput('Score / VS', item.score, 'score')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTableEditor(items) {
+  return items.map((item, index) => `
+    <div class="editor-item" data-list="table" data-index="${index}">
+      <div class="editor-item-top">
+        <div class="item-badge">Table Row ${index + 1}</div>
+        <button class="btn btn-secondary" type="button" data-action="remove-item" data-list="table" data-index="${index}">Remove</button>
+      </div>
+      <div class="form-grid">
+        ${createInput('Team', item.team, 'team')}
+        ${createInput('Played', item.played, 'played', 'number')}
+        ${createInput('Won', item.won, 'won', 'number')}
+        ${createInput('Draw', item.draw, 'draw', 'number')}
+        ${createInput('Lost', item.lost, 'lost', 'number')}
+        ${createInput('Goals For', item.gf, 'gf', 'number')}
+        ${createInput('Goals Against', item.ga, 'ga', 'number')}
+        ${createInput('Goal Difference', item.gd, 'gd', 'number')}
+        ${createInput('Points', item.points, 'points', 'number')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSimpleStatEditor(items, listName, label) {
+  return items.map((item, index) => `
+    <div class="editor-item" data-list="${listName}" data-index="${index}">
+      <div class="editor-item-top">
+        <div class="item-badge">${escapeHtml(label)} ${index + 1}</div>
+        <button class="btn btn-secondary" type="button" data-action="remove-item" data-list="${listName}" data-index="${index}">Remove</button>
+      </div>
+      <div class="form-grid">
+        ${createInput('Player', item.player, 'player')}
+        ${createInput('Team', item.team, 'team')}
+        ${createInput('Value', item.value, 'value', 'number')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderNewsEditor(items) {
+  return items.map((item, index) => `
+    <div class="editor-item" data-list="news" data-index="${index}">
+      <div class="editor-item-top">
+        <div class="item-badge">News ${index + 1}</div>
+        <button class="btn btn-secondary" type="button" data-action="remove-item" data-list="news" data-index="${index}">Remove</button>
+      </div>
+      <div class="form-grid">
+        ${createInput('Tag', item.tag, 'tag')}
+        ${createInput('Date', item.date, 'date')}
+        ${createInput('Source', item.source, 'source')}
+        ${createInput('Image URL or data image', item.image, 'image')}
+        <div class="field" style="grid-column: 1 / -1;">
+          <label>Headline</label>
+          <input type="text" value="${escapeHtml(item.title ?? '')}" data-field="title">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+function renderAdminGateway() {
+  const gateway = document.getElementById('admin-gateway');
+  gateway.innerHTML = `
+    <div class="editor-card">
+      <h4>Choose Your Admin Panel</h4>
+      <div class="editor-note">Every regional admin has a separate password. This is a static-site login, so the passwords live in the page source and are meant for lightweight control only.</div>
+    </div>
+    <div class="admin-auth-grid">
+      ${state.regions.map((region, index) => `
+        <div class="admin-auth-card">
+          <div class="item-badge">Dedicated zone panel</div>
+          <h4>${escapeHtml(region.name)}</h4>
+          <p class="admin-auth-help">Use this password to update only the ${escapeHtml(region.name)} section, including fixtures, table, top scorer, top assistor, and latest news cards.</p>
+          <div class="admin-login-row">
+            <input type="password" placeholder="Enter password" data-admin-password="${index}">
+            <button class="btn btn-primary" type="button" data-action="admin-login" data-index="${index}">Open Panel</button>
+          </div>
+          <div class="admin-login-error" id="admin-error-${index}"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderAdminAccess() {
+  const tools = document.getElementById('admin-tools');
+  const gateway = document.getElementById('admin-gateway');
+  const workspace = document.getElementById('admin-workspace');
+
+  if (authenticatedAdminIndex === null) {
+    tools.classList.add('hidden');
+    gateway.classList.remove('hidden');
+    workspace.classList.add('hidden');
+    renderAdminGateway();
+    return;
+  }
+
+  activeAdminRegion = authenticatedAdminIndex;
+  tools.classList.remove('hidden');
+  gateway.classList.add('hidden');
+  workspace.classList.remove('hidden');
+  renderAdminEditor();
+}
+
+function renderAdminEditor() {
+  const region = state.regions[activeAdminRegion];
+  if (!region) return;
+
+  document.getElementById('active-admin-kicker').textContent = `Zone Admin • ${region.short || region.name}`;
+  document.getElementById('active-admin-title').textContent = `${region.name} Control Panel`;
+  document.getElementById('active-admin-note').textContent = `Only the ${region.name} section is unlocked in this panel.`;
+
+  const editor = document.getElementById('admin-editor');
+  editor.innerHTML = `
+    <div class="editor-card">
+      <h4>${escapeHtml(region.name)} Panel</h4>
+      <div class="form-grid">
+        <div class="field">
+          <label>Region name</label>
+          <input type="text" id="region-name" value="${escapeHtml(region.name)}">
+        </div>
+        <div class="field">
+          <label>Venue</label>
+          <input type="text" id="region-venue" value="${escapeHtml(region.venue)}">
+        </div>
+        <div class="field">
+          <label>Slug / section id</label>
+          <input type="text" id="region-slug" value="${escapeHtml(region.slug)}">
+        </div>
+        <div class="field">
+          <label>Update line</label>
+          <input type="text" id="region-update" value="${escapeHtml(region.update || '')}">
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <h4>Fixtures</h4>
+      <div class="editor-list" id="fixtures-editor">${renderFixtureEditor(region.fixtures)}</div>
+      <div class="list-actions">
+        <button class="btn btn-secondary" type="button" data-action="add-item" data-list="fixtures">Add Fixture</button>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <h4>Table</h4>
+      <div class="editor-list" id="table-editor">${renderTableEditor(region.table)}</div>
+      <div class="list-actions">
+        <button class="btn btn-secondary" type="button" data-action="add-item" data-list="table">Add Team Row</button>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <h4>Top Goal Scorer</h4>
+      <div class="editor-list" id="scorers-editor">${renderSimpleStatEditor(region.scorers, 'scorers', 'Goal Scorer')}</div>
+      <div class="list-actions">
+        <button class="btn btn-secondary" type="button" data-action="add-item" data-list="scorers">Add Goal Scorer</button>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <h4>Top Assistor</h4>
+      <div class="editor-list" id="assists-editor">${renderSimpleStatEditor(region.assists, 'assists', 'Assist Leader')}</div>
+      <div class="list-actions">
+        <button class="btn btn-secondary" type="button" data-action="add-item" data-list="assists">Add Assistor</button>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <h4>Latest News With Pictures</h4>
+      <div class="editor-list" id="news-editor">${renderNewsEditor(region.news)}</div>
+      <div class="list-actions">
+        <button class="btn btn-secondary" type="button" data-action="add-item" data-list="news">Add News Card</button>
+      </div>
+      <div class="editor-note">For pictures, paste a direct image URL. You can also paste a data:image string if you later decide to store local images.</div>
+    </div>
+  `;
+}
+
+function addItem(region, listName) {
+  const templates = {
+    fixtures: { phase: 'Round', home: 'Home Team', away: 'Away Team', time: '09:00', venue: region.venue, status: 'Upcoming', score: 'VS' },
+    table: { team: 'New Team', played: 0, won: 0, draw: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0 },
+    scorers: { player: 'New Player', team: 'Team', value: 0 },
+    assists: { player: 'New Player', team: 'Team', value: 0 },
+    news: { tag: 'Update', title: 'New headline', date: 'April 2026', source: 'Tournament Desk', image: makePlaceholder('News Update') }
+  };
+  region[listName].push(deepCopy(templates[listName]));
+}
+
+function removeItem(region, listName, index) {
+  region[listName].splice(index, 1);
+}
+
+function toNumber(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function readEditorData() {
+  const region = state.regions[activeAdminRegion];
+  if (!region || !document.getElementById('region-name')) return;
+
+  region.name = document.getElementById('region-name').value.trim() || region.name;
+  region.venue = document.getElementById('region-venue').value.trim() || region.venue;
+  region.slug = document.getElementById('region-slug').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') || region.slug;
+  region.update = document.getElementById('region-update').value.trim();
+
+  ['fixtures', 'table', 'scorers', 'assists', 'news'].forEach(listName => {
+    const nodes = document.querySelectorAll(`[data-list="${listName}"]`);
+    region[listName] = Array.from(nodes).map(node => {
+      const fields = node.querySelectorAll('[data-field]');
+      const data = {};
+      fields.forEach(field => {
+        const key = field.dataset.field;
+        data[key] = field.type === 'number' ? Number.isFinite(Number(field.value)) ? Number(field.value) : 0 : field.value.trim();
+      });
+      return data;
+    });
+  });
+}
+
+function renderAll() {
+  renderHero();
+  renderPublicRegions();
+  renderAdminAccess();
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function openAdmin() {
+  document.getElementById('admin-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdminAccess();
+}
+
+function closeAdmin() {
+  authenticatedAdminIndex = null;
+  renderAdminAccess();
+  document.getElementById('admin-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+function resetState() {
+  state = deepCopy(defaultState);
+  activeAdminRegion = 0;
+  persistState();
+  renderAll();
+  showToast('Demo data restored.');
+}
+
+function exportState() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'boteti-west-football-tournament-data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importState(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed || !Array.isArray(parsed.regions)) throw new Error('Invalid file');
+      state = parsed;
+      activeAdminRegion = 0;
+      persistState();
+      renderAll();
+      showToast('Data imported successfully.');
+    } catch (error) {
+      showToast('Import failed. Use a valid JSON backup file.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+
+function setupAdminEvents() {
+  document.getElementById('close-admin').addEventListener('click', closeAdmin);
+  document.getElementById('switch-admin').addEventListener('click', () => {
+    authenticatedAdminIndex = null;
+    renderAdminAccess();
+    showToast('Choose another regional admin panel.');
+  });
+
+  document.getElementById('admin-modal').addEventListener('click', (event) => {
+    if (event.target.id === 'admin-modal') closeAdmin();
+  });
+
+  document.getElementById('save-btn').addEventListener('click', () => {
+    if (authenticatedAdminIndex === null) return;
+    readEditorData();
+    persistState();
+    renderAll();
+    const region = state.regions[activeAdminRegion];
+    showToast(`${region?.name || 'Region'} saved.`);
+  });
+
+  document.getElementById('admin-gateway').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action="admin-login"]');
+    if (!button) return;
+    const index = Number(button.dataset.index);
+    const input = document.querySelector(`[data-admin-password="${index}"]`);
+    const errorBox = document.getElementById(`admin-error-${index}`);
+    const password = input?.value || '';
+    const account = ADMIN_ACCOUNTS[index];
+
+    if (!account) return;
+
+    if (password === account.password) {
+      authenticatedAdminIndex = index;
+      activeAdminRegion = index;
+      if (errorBox) errorBox.textContent = '';
+      if (input) input.value = '';
+      renderAdminAccess();
+      showToast(`${account.label} panel unlocked.`);
+      return;
+    }
+
+    if (errorBox) errorBox.textContent = 'Wrong password. Try again.';
+  });
+
+  document.getElementById('admin-gateway').addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter') return;
+    const input = event.target.closest('[data-admin-password]');
+    if (!input) return;
+    const button = input.parentElement?.querySelector('[data-action="admin-login"]');
+    if (button) button.click();
+  });
+
+  document.getElementById('admin-editor').addEventListener('click', (event) => {
+    const actionButton = event.target.closest('[data-action]');
+    if (!actionButton) return;
+    const region = state.regions[activeAdminRegion];
+    const action = actionButton.dataset.action;
+    const listName = actionButton.dataset.list;
+    if (!region || !listName) return;
+    readEditorData();
+    if (action === 'add-item') addItem(region, listName);
+    if (action === 'remove-item') removeItem(region, listName, Number(actionButton.dataset.index));
+    renderAdminEditor();
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAdmin();
+    if (document.getElementById('admin-modal').classList.contains('open')) return;
+    const targetTag = event.target?.tagName;
+    if (targetTag === 'INPUT' || targetTag === 'TEXTAREA') return;
+    if (event.key.length === 1) {
+      typingBuffer = (typingBuffer + event.key.toLowerCase()).slice(-5);
+      if (typingBuffer === 'admin') {
+        openAdmin();
+        typingBuffer = '';
+      }
+    }
+  });
+}
+
+
+function setupBackground() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = Array.from({ length: Math.max(26, Math.floor(window.innerWidth / 55)) }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.2 + 0.6,
+      dx: (Math.random() - 0.5) * 0.22,
+      dy: (Math.random() - 0.5) * 0.22,
+      a: Math.random() * 0.45 + 0.15
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255, 213, 79, ${p.a})`;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener('resize', resize);
+}
+
+renderAll();
+setupAdminEvents();
+setupBackground();
+</script>
+</body>
+</html>
